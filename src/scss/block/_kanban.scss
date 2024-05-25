@@ -1,138 +1,295 @@
+.kanban {
+  margin-top: 40px;
+  &__title {
+    margin-bottom: 30px;
+  }
+  &__btn {
+    padding: 10px 24px;
+    background: dodgerblue;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+  }
 
-.kanban{
-    margin-top: 40px;
-    &__title{
-        margin-bottom: 30px;
+  &__header__form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    background-color: #999;
+    padding: 40px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+    display: none;
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      outline: none;
+      border: 1px solid gray;
     }
-    &__btn{
-        padding: 10px 24px;
-        background: dodgerblue;
-        border: none;
-        border-radius: 8px;
-        color: #fff;
+    button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      outline: none;
+      border: 1px solid blue;
+      background-color: blue;
+      color: white;
+      transition: 0.6s;
+      margin-top: 10px;
     }
-    &__form{
-        margin-top: 30px;
-        // max-height: 0;
-        overflow: hidden;
-        transition: .3s;
-        visibility: hidden;
-        opacity: 0;
-        user-select: none;
-    }
-    &__form.show{
-        // max-height: 100px;
-        visibility: visible;
-        opacity: 1;
-        user-select: auto;
-    }
-    &__wrapper{
-        margin-top: 30px;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-gap: 12px;
-        align-items: flex-start;
-    }
-    &__block{
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        flex: 1;
-        max-height: 600px;
-        overflow: auto;
-    }
-    &__box{
-        min-height: 300px;
-        border-radius: 12px 12px 0 0;
-        overflow: hidden;
-        background: #f1f1f1;
-        display: flex;
-        flex-direction: column;
-    }
-    &__heading{
-        padding: 10px;
-        color: #fff;
-        text-align: center;
+    button:hover {
+      transform: scale(0.97);
     }
 
-   
-    &__item{
-        min-height: 100px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 0 5px #0001;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        select{
-            padding: 3px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            outline: none;
-        }
+    &__title {
+      color: white;
+      text-align: center;
+      padding-bottom: 10px;
     }
-    &__commit{
-        font-size: 14px;
-        color: #999;
-        flex:1;
-    }
-    &__status{
-        width: 100%;
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        span{
-            font-size: 12px;
-            color: #999;
-        }
-    }
-    &__add_btn{
-        width: 100%;
-        height: 40px;
-        border: none;
-        outline: none;
-        background: transparent;
+  }
+  .show__add {
+    display: block;
+  }
+  &__header__close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: red;
+    cursor: pointer;
+  }
+
+  &__form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(43, 43, 68);
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 400px;
+    border-radius: 10px;
+    display: none;
+    gap: 15px;
+    z-index: 111;
+    input {
+      width: 100%;
+      padding: 10px;
+      outline: none;
+      border: none;
+      box-shadow: inset 1px 1px 10px #aaa1;
+      border-radius: 5px;
     }
 
-    .ready{
-        border-left: 4px solid #5559D6;
-        .kanban__heading{
-            background: #5559D6;
-        }
+    &__text {
+      font-size: 24px;
+      color: white;
+      padding-top: 10px;
     }
-    .working{
-        border-left: 4px solid #F1AE53;
-        .kanban__heading{
-            background: #F1AE53;
-        }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      outline: none;
+      border: 2px solid transparent;
+      background-color: blue;
+      color: white;
+      box-shadow: inset 1px 1px 10px #aaa1;
+      border-radius: 5px;
+      font-weight: 700;
+      transition: 0.5s;
     }
-    .stuck{
-        border-left: 4px solid #D04F61;
-        .kanban__heading{
-            background: #D04F61;
-        }
+
+    button:hover {
+      border: 2px solid blue;
+      background-color: white;
+      color: blue;
+      transform: scale(0.98);
     }
-    .done{
-        border-left: 4px solid #5DC47D;
-        .kanban__heading{
-            background: #5DC47D;
-        }
+
+    &__close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background-color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      h1 {
+        color: red;
+      }
     }
+  }
+  &__form.show {
+    display: flex;
+  }
+
+  &__wrapper {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 12px;
+    align-items: flex-start;
+  }
+  &__block {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    max-height: 600px;
+    overflow: auto;
+
+    &__empty {
+      font-size: 20px;
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    &__delete {
+      padding: 6px 30px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      background-color: blue;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      margin-top: 50px;
+    }
+  }
+  &__box {
+    min-height: 300px;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+    background: #f1f1f1;
+    display: flex;
+    flex-direction: column;
+    &:nth-child(1) {
+      border-left: 4px solid #5559d6;
+      .kanban__heading {
+        background: #5559d6;
+      }
+    }
+    &:nth-child(2) {
+      border-left: 4px solid #f1ae53;
+      .kanban__heading {
+        background: #f1ae53;
+      }
+    }
+    &:nth-child(3) {
+      border-left: 4px solid #d04f61;
+      .kanban__heading {
+        background: #d04f61;
+      }
+    }
+    &:nth-child(4) {
+      border-left: 4px solid #5dc47d;
+      .kanban__heading {
+        background: #5dc47d;
+      }
+    }
+  }
+
+  &__info {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-left: 370px;
+    h1 {
+      font-size: 20px;
+      padding: 30px 0px;
+    }
+
+    button {
+      padding: 10px 30px;
+      border-radius: 10px;
+      border: none;
+      background-color: blue;
+      color: white;
+    }
+  }
+  &__heading {
+    padding: 10px;
+    color: #fff;
+    text-align: center;
+  }
+
+  &__item {
+    position: relative;
+    min-height: 100px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 5px #0001;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    select {
+      padding: 3px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      outline: none;
+    }
+  }
+
+  &__delete {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    color: red;
+  }
+  &__commit {
+    font-size: 14px;
+    color: #999;
+    flex: 1;
+  }
+  &__status {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    span {
+      font-size: 12px;
+      color: #999;
+    }
+  }
+  &__add_btn {
+    width: 100%;
+    height: 40px;
+    border: none;
+    outline: none;
+    background: transparent;
+  }
 }
 
-
-@media (min-width:1200px) {
-    .kanban{
-        &__block{
-            &::-webkit-scrollbar{
-                width: 6px;
-            }
-            &::-webkit-scrollbar-thumb{
-                background: #ddd;
-                border-radius: 8px;
-            }
-        }
+@media (min-width: 1200px) {
+  .kanban {
+    &__block {
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: #ddd;
+        border-radius: 8px;
+      }
     }
+  }
 }

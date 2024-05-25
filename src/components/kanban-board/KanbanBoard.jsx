@@ -1,25 +1,26 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { DATA } from "@/static";
 import KanbanBlog from "./KanbanBlog";
-import { useCallback } from "react";
 import KanbanItems from "./KanbanItems";
-import { useEffect } from "react";
 
-/**
- * ready
- * working
- * stuck
- * done
- */
-
-const STATUS_ITEMS = ["ready", "working", "stuck", "done"];
+const STATUS_ITEMS = [
+  { id: 1, title: "ready" },
+  { id: 2, title: "working" },
+  { id: 3, title: "stuck" },
+  { id: 4, title: "done" },
+];
 
 const KanbanBoard = () => {
   const [data, setData] = useState(
     JSON.parse(localStorage.getItem("kanban-data")) || DATA
   );
-  const [selectedstatus, setSelectStatus] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(null);
   const [changeStatus, setChangeStatus] = useState(null);
+  const [addBtn, setAddBtn] = useState(false);
+  const [info, setInfo] = useState("");
+  const [status, setStatus] = useState(
+    JSON.parse(localStorage.getItem("status-data")) || STATUS_ITEMS
+  );
 
   const title = useRef(null);
   const desc = useRef(null);
@@ -29,27 +30,32 @@ const KanbanBoard = () => {
   }, [data]);
 
   useEffect(() => {
+    localStorage.setItem("status-data", JSON.stringify(status));
+  }, [status]);
+
+  useEffect(() => {
     if (changeStatus) {
-      let index = data?.findIndex((el) => el.id === changeStatus.id);
-      data?.splice(index, 1, changeStatus);
+      let index = data.findIndex((el) => el.id === changeStatus.id);
+      data.splice(index, 1, changeStatus);
       setData([...data]);
     }
   }, [changeStatus]);
 
   const filterByStatus = (status) => {
     return data
-      ?.filter((el) => el.status === status)
-      ?.map((el) => (
+      .filter((el) => el.status === status)
+      .map((el) => (
         <KanbanItems
-          setChangeStatus={setChangeStatus}
           key={el.id}
-          STATUS_ITEMS={STATUS_ITEMS}
           el={el}
+          setChangeStatus={setChangeStatus}
+          STATUS_ITEMS={STATUS_ITEMS}
+          setData={setData}
         />
       ));
   };
 
-  let memoFilterStatus = useCallback(
+  const memoFilterStatus = useCallback(
     (status) => {
       return filterByStatus(status);
     },
@@ -58,22 +64,29 @@ const KanbanBoard = () => {
 
   const handleCreateItem = (e) => {
     e.preventDefault();
-    let date = new Date();
-    let timeZoneGMT = (hour) =>
-      new Date(date.getTime() + hour * 60 * 60 * 1000);
-    let newItems = {
+    const date = new Date();
+    const newItem = {
       id: date.getTime(),
       title: title.current.value,
       desc: desc.current.value,
-      status: selectedstatus,
-      createdAt: timeZoneGMT(5).toISOString(),
+      status: selectedStatus,
+      createdAt: new Date().toISOString(),
     };
-    console.log(newItems);
-    setData((prev) => [...prev, newItems]);
-
-    setSelectStatus(null);
+    setData((prev) => [...prev, newItem]);
+    setSelectedStatus(null);
     title.current.value = "";
     desc.current.value = "";
+  };
+
+  const boxCreate = (e) => {
+    e.preventDefault();
+    const newStatus = {
+      id: new Date().getTime(),
+      title: info,
+    };
+    setStatus((prevStatus) => [...prevStatus, newStatus]);
+    setInfo("");
+    setAddBtn(false);
   };
 
   return (
@@ -82,23 +95,57 @@ const KanbanBoard = () => {
         <div className="kanban">
           <h2 className="kanban__title">Kanban Board</h2>
           <div className="kanban__header">
-            <button className="kanban__btn">Add</button>
+            <button onClick={() => setAddBtn(true)} className="kanban__btn">
+              Add
+            </button>
+            <form
+              onSubmit={boxCreate}
+              className={`kanban__header__form ${addBtn ? "show__add" : ""}`}
+            >
+              <h1
+                onClick={() => setAddBtn(false)}
+                className="kanban__header__close"
+              >
+                X
+              </h1>
+              <h1 className="kanban__header__form__title">Add Column</h1>
+              <input
+                value={info}
+                onChange={(e) => setInfo(e.target.value)}
+                type="text"
+              />
+              <button type="submit">Create</button>
+            </form>
           </div>
           <form
             onSubmit={handleCreateItem}
-            className={`kanban__form ${selectedstatus ? "show" : ""}`}
+            className={`kanban__form ${selectedStatus ? "show" : ""}`}
           >
-            <p>Create {selectedstatus}</p>
+            <p className="kanban__form__text">Create {selectedStatus}</p>
+            <div
+              onClick={() => setSelectedStatus(null)}
+              className="kanban__form__close"
+            >
+              <h1>X</h1>
+            </div>
             <input ref={title} type="text" />
             <input ref={desc} type="text" />
-            <button>Create</button>
+            <button type="submit">Create</button>
           </form>
           <div className="kanban__wrapper">
-            <KanbanBlog
-              status__items={STATUS_ITEMS}
-              items={memoFilterStatus}
-              setSelectStatus={setSelectStatus}
-            />
+            {status.length ? (
+              <KanbanBlog
+                statusItems={status}
+                items={memoFilterStatus}
+                setSelectStatus={setSelectedStatus}
+                setStatus={setStatus}
+              />
+            ) : (
+              <div onClick={() => setAddBtn(true)} className="kanban__info">
+                <h1>Kuningizni Samalariroq otkazing</h1>
+                <button>Boshlash</button>
+              </div>
+            )}
           </div>
         </div>
       </div>
