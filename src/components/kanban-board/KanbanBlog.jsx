@@ -1,28 +1,28 @@
 import React from "react";
 import { memo } from "react";
 
-const KanbanBlock = ({ statusItems, items, setSelectStatus, setStatus }) => {
+function KanbanBlog({ statusItems, items, setSelectStatus, setStatus }) {
   const handleDelete = (id) => {
     if (confirm("Malumotlar Ochirilsinmi")) {
       setStatus((prev) => prev.filter((el) => el.id !== id));
     }
   };
 
-  return statusItems.map((status) => (
-    <div key={status.id} className={`kanban__box ${status.title}`}>
+  return statusItems.map((statusItem) => (
+    <div key={statusItem.id} className={`kanban__box ${statusItem.title}`}>
       <div className="kanban__heading">
         <p>
-          {status.title} / {items(status.title).length}
+          {statusItem.title} / {items(statusItem.title).length}
         </p>
       </div>
       <div className="kanban__block">
-        {items(status.title).length ? (
-          items(status.title)
+        {items(statusItem.title).length ? (
+          items(statusItem.title)
         ) : (
           <div>
             <p className="kanban__block__empty">No items found</p>
             <button
-              onClick={() => handleDelete(status.id)}
+              onClick={() => handleDelete(statusItem.id)}
               className="kanban__block__delete"
             >
               Delete
@@ -31,13 +31,13 @@ const KanbanBlock = ({ statusItems, items, setSelectStatus, setStatus }) => {
         )}
       </div>
       <button
-        onClick={() => setSelectStatus(status.title)}
+        onClick={() => setSelectStatus(statusItem.title)}
         className="kanban__add_btn"
       >
         Add item
       </button>
     </div>
   ));
-};
+}
 
-export default memo(KanbanBlock);
+export default memo(KanbanBlog);

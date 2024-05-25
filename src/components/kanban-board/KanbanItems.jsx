@@ -1,12 +1,12 @@
 import React from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 
-const KanbanItems = ({ setChangeStatus, STATUS_ITEMS, setData, el }) => {
-  let time = el.createdAt.split("T")[1].slice(0, 5);
+function KanbanItems({ setChangeStatus, STATUS_ITEMS, setData, el }) {
+  const time = el.createdAt.split("T")[1].slice(0, 5);
 
   const handleDelete = (id) => {
     if (confirm("Malumot Ochirilsinmi")) {
-      setData((prev) => prev.filter((el) => el.id !== id));
+      setData((prev) => prev.filter((item) => item.id !== id));
     }
   };
 
@@ -37,6 +37,6 @@ const KanbanItems = ({ setChangeStatus, STATUS_ITEMS, setData, el }) => {
       </div>
     </div>
   );
-};
+}
 
 export default KanbanItems;
